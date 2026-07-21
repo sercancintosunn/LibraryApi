@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="Library.WebApi/Library.WebApi.csproj" />
+  <Project Path="Library.WebApi/LibraryApi.WebApi.csproj" />
   <Project Path="LibraryApi.Business/LibraryApi.Business.csproj" />
   <Project Path="LibraryApi.DataAccess/LibraryApi.DataAccess.csproj" />
   <Project Path="LibraryApi.Entities/LibraryApi.Entities.csproj" />
