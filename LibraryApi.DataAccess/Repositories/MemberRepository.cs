@@ -1,0 +1,18 @@
+﻿using LibraryApi.Business.Interfaces.Repositories;
+using LibraryApi.DataAccess.Data;
+using LibraryApi.Entities.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LibraryApi.DataAccess.Repositories
+{
+    public class MemberRepository : GenericRepository<Member>, IMemberRepository
+    {
+        public MemberRepository(LibraryDbContext context) : base(context)
+        {
+        }
+    }
+}
