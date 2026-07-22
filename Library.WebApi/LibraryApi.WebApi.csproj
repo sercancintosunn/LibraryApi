@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\LibraryApi.Business\LibraryApi.Business.csproj" />
     <ProjectReference Include="..\LibraryApi.DataAccess\LibraryApi.DataAccess.csproj" />
   </ItemGroup>
