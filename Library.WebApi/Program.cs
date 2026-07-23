@@ -23,13 +23,13 @@ builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
 builder.Services.AddScoped<ILoanRepository,LoanRepository>();
 
-builder.Services.AddScoped<IGenericRepository<Author>, AuthorRepository>();
-builder.Services.AddScoped<IGenericRepository<Category>, CategoryRepository>();
-builder.Services.AddScoped<IGenericRepository<Member>, MemberRepository>();
 
-builder.Services.AddScoped<IGenericService<Author>, GenericService<Author>>();
+builder.Services.AddScoped<IGenericRepository<Member>, MemberRepository>();
 builder.Services.AddScoped<IGenericService<Member>, GenericService<Member>>();
-builder.Services.AddScoped<IGenericService<Category>, GenericService<Category>>();
+
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<ILoanService, LoanService>();

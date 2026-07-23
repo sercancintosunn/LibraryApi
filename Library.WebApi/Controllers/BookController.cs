@@ -1,4 +1,5 @@
-﻿using LibraryApi.Business.Interfaces.Services;
+﻿using LibraryApi.Business.DTOs.Books;
+using LibraryApi.Business.Interfaces.Services;
 using LibraryApi.Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,23 +40,20 @@ namespace LibraryApi.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Book book)
+        public async Task<IActionResult> Create([FromBody] CreateBookDto dto)
         {
-            var created = await _bookService.CreateBookAsync(book);
+            var created = await _bookService.CreateBookAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody]Book book)
+        public async Task<IActionResult> Update(int id, [FromBody]CreateBookDto dto)
         {
-            if(id != book.Id)
-            {
-                return BadRequest(new { message = "URL'deki id ile gönderilen kitabın id'si eşleşmiyor." });
-            }
+            
 
             try
             {
-                await _bookService.UpdateBookAsync(book);
+                await _bookService.UpdateBookAsync(id,dto);
                 return NoContent()  ;
             }
             catch(KeyNotFoundException ex)

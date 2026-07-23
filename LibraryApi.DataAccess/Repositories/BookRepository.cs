@@ -18,7 +18,27 @@ namespace LibraryApi.DataAccess.Repositories
 
         public async Task<IEnumerable<Book>> GetByAuthorIdAsync(int authorId)
         {
-            return await _dbSet.Where(b => b.AuthorId == authorId).ToListAsync();
+            return await _dbSet
+                .Include(b => b.Author)
+                .Include(b => b.Category)
+                .Where(b => b.AuthorId == authorId)
+                .ToListAsync();
+        }
+
+        public new async Task<Book?> GetByIdAsync(int id)
+        {
+            return await _dbSet
+                .Include(b => b.Author)
+                .Include(b => b.Category)
+                .FirstOrDefaultAsync(b => b.Id == id);
+        }
+
+        public new async Task<IEnumerable<Book>> GetAllAsync()
+        {
+            return await _dbSet
+                .Include(b => b.Author)
+                .Include(b => b.Category)
+                .ToListAsync();
         }
     }
 }

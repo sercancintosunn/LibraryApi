@@ -9,6 +9,8 @@ namespace LibraryApi.Business.Interfaces.Repositories
 {
     public interface IBookRepository : IGenericRepository<Book>
     {
+        new Task<Book?> GetByIdAsync(int id);
+        new Task<IEnumerable<Book>> GetAllAsync();
         Task<IEnumerable<Book>> GetByAuthorIdAsync(int authorId);
     }
 }
