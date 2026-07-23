@@ -10,10 +10,10 @@ namespace LibraryApi.Business.Interfaces.Services
     public interface IAuthorService
     {
         Task<AuthorResponseDto?> GetByIdAsync(int id);
-        Task<IEnumerable<AuthorResponseDto>> GetAll();
+        Task<IEnumerable<AuthorResponseDto>> GetAllAsync();
         Task<AuthorResponseDto> CreateAsync(CreateAuthorDto dto);
         Task UpdateAsync(int id, CreateAuthorDto dto);
         Task DeleteAsync(int id);
-
+       
     }
 }

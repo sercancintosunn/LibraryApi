@@ -50,7 +50,7 @@ namespace LibraryApi.Business.Services
                 
         }
 
-        public async Task<IEnumerable<AuthorResponseDto>> GetAll()
+        public async Task<IEnumerable<AuthorResponseDto>> GetAllAsync()
         {
             var authors = await _authorRepository.GetAllAsync();
             return authors.Select(MapToResponseDto);
@@ -86,5 +86,7 @@ namespace LibraryApi.Business.Services
 
             };
         }
+
+        
     }
 }

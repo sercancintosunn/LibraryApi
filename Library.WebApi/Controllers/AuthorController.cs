@@ -1,4 +1,5 @@
-﻿using LibraryApi.Business.Interfaces.Services;
+﻿using LibraryApi.Business.DTOs.Authors;
+using LibraryApi.Business.Interfaces.Services;
 using LibraryApi.Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +10,9 @@ namespace LibraryApi.WebApi.Controllers
     [ApiController]
     public class AuthorController : ControllerBase
     {
-        private readonly IGenericService<Author> _authorService;
+        private readonly IAuthorService _authorService;
 
-        public AuthorController(IGenericService<Author> authorService)
+        public AuthorController(IAuthorService authorService)
         {
             _authorService = authorService;
             
@@ -36,10 +37,39 @@ namespace LibraryApi.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Author author)
+        public async Task<IActionResult> Create([FromBody] CreateAuthorDto dto)
         {
-            var created = await _authorService.CreateAsync(author);
+            var created = await _authorService.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(int id, [FromBody] CreateAuthorDto dto)
+        {
+            try
+            {
+                await _authorService.UpdateAsync(id, dto);
+                return NoContent();
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex });
+            }
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _authorService.DeleteAsync(id);
+                return NoContent();
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex });
+            }
         }
 
     }

@@ -46,7 +46,7 @@ namespace LibraryApi.Business.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<CategoryResponseDto>> GetAll()
+        public async Task<IEnumerable<CategoryResponseDto>> GetAllAsync()
         {
             var categories = await _categoryRepository.GetAllAsync();
             return categories.Select(MapToResponseDto);
