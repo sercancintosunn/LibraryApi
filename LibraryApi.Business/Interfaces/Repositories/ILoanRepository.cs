@@ -10,5 +10,7 @@ namespace LibraryApi.Business.Interfaces.Repositories
     public interface ILoanRepository : IGenericRepository<Loan>
     {
         Task<Loan?> GetActiveLoanByMemberAsync(int memberId);
+        new Task<Loan?> GetByIdAsync(int id);
+        new Task<IEnumerable<Loan>> GetAllAsync();
     }
 }

@@ -21,5 +21,21 @@ namespace LibraryApi.DataAccess.Repositories
             return await _dbSet.FirstOrDefaultAsync(l => l.MemberId == memberId && l.ReturnDate == null);
            
         }
+
+        public new async Task<Loan?> GetByAsync(int id)
+        {
+            return await _dbSet
+                .Include(l => l.Book)
+                .Include(l => l.Member)
+                .FirstOrDefaultAsync(l => l.Id == id);
+        }
+
+        public new async Task<IEnumerable<Loan>> GetAllAsync()
+        {
+            return await _dbSet
+                .Include(l => l.Book)
+                .Include(l => l.Member)
+                .ToListAsync();
+        }
     }
 }
