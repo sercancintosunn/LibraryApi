@@ -1,4 +1,5 @@
-﻿using LibraryApi.Business.Interfaces;
+﻿using LibraryApi.Business.DTOs.Loans;
+using LibraryApi.Business.Interfaces;
 using LibraryApi.Business.Interfaces.Repositories;
 using LibraryApi.Business.Interfaces.Services;
 using LibraryApi.Entities.Models;
@@ -21,25 +22,41 @@ namespace LibraryApi.Business.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Loan> CreateLoanAsync(int bookId, int memberId)
+        public async Task<LoanResponseDto> CreateLoanAsync(CreateLoanDto dto)
         {
-            var activeLoan = await _loanRepository.GetActiveLoanByMemberAsync(memberId);
+            var activeLoan = await _loanRepository.GetActiveLoanByMemberAsync(dto.MemberId);
 
             if(activeLoan != null)
             {
-                throw new InvalidOperationException("Bu üyenin iade etmediği kitap var. Önce onu iade etmesi gerekiyor");
+                throw new InvalidOperationException("Bu üyenin iade etmediği kitap var");
             }
 
             var newLoan = new Loan
             {
-                BookId = bookId,
-                MemberId = memberId,
+                BookId = dto.BookId,
+                MemberId = dto.MemberId,
                 LoanDate = DateTime.UtcNow
             };
 
             await _loanRepository.AddAsync(newLoan);
-            await _unitOfWork.SaveChangesAsync();
-            return newLoan;
+            await _unitOfWork.SaveChangesAsync(); ;
+
+            var created = await _loanRepository.GetByIdAsync(newLoan.Id);
+            return MapToResponseDto(created!);
+            
+        }
+
+        public async Task<IEnumerable<LoanResponseDto>> GetAllAsync()
+        {
+            var loans = await _loanRepository.GetAllAsync();
+            return loans.Select(MapToResponseDto);
+
+        }
+
+        public async Task<LoanResponseDto?> GetByIdAsync(int id)
+        {
+            var loan = await _loanRepository.GetByIdAsync(id);
+            return loan == null ? null : MapToResponseDto(loan);
         }
 
         public async Task ReturnLoanAsync(int loanId, int requestingMemberId, bool isAdmin)
@@ -53,7 +70,7 @@ namespace LibraryApi.Business.Services
 
             if(isAdmin && loan.MemberId != requestingMemberId)
             {
-                throw new UnauthorizedAccessException("Bu ödünç kaydını iade etme yetkiniz yok.");
+                throw new UnauthorizedAccessException("Bu ödünç kaydını iade etme hakkınız yok");
             }
 
             if(loan.ReturnDate != null)
@@ -64,7 +81,20 @@ namespace LibraryApi.Business.Services
             loan.ReturnDate = DateTime.UtcNow;
             _loanRepository.Update(loan);
             await _unitOfWork.SaveChangesAsync();
-             
+           
+        }
+
+
+        private static LoanResponseDto MapToResponseDto(Loan loan)
+        {
+            return new LoanResponseDto
+            {
+                Id = loan.Id,
+                BookTitle = loan.Book?.Title ?? string.Empty,
+                MemberName = loan.Member?.FullName ?? string.Empty,
+                LoanDate = loan.LoanDate,
+                ReturnDate = loan.ReturnDate
+            };
         }
     }
 }
