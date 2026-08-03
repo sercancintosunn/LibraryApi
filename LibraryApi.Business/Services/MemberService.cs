@@ -32,7 +32,7 @@ namespace LibraryApi.Business.Services
             var members = await _memberRepository.GetAllAsync();
             var member = members.FirstOrDefault(m => m.Email == dto.Email);
 
-            if(member != null || !BCrypt.Net.BCrypt.Verify(dto.Password, member.PasswordHash))
+            if(member == null || !BCrypt.Net.BCrypt.Verify(dto.Password, member.PasswordHash))
             {
                 throw new UnauthorizedAccessException("Email veya Şifre Hatalı");
             }

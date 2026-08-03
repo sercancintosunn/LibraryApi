@@ -12,7 +12,7 @@ namespace LibraryApi.Business.Interfaces.Services
     {
         Task<LoanResponseDto?> GetByIdAsync(int id);
         Task<IEnumerable<LoanResponseDto>> GetAllAsync();
-        Task<LoanResponseDto> CreateLoanAsync(CreateLoanDto dto)
+        Task<LoanResponseDto> CreateLoanAsync(CreateLoanDto dto);
         Task ReturnLoanAsync(int loanId, int requestingMemberId, bool isAdmin);
     }
 }
