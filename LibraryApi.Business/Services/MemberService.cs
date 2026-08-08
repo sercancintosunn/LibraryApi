@@ -79,5 +79,43 @@ namespace LibraryApi.Business.Services
 
             };
         }
+
+        public async Task UpdateAsync(int memberId, UpdateMemberDto dto, int requestingMemberId, bool isAdmin)
+        {
+            if(!isAdmin && memberId != requestingMemberId)
+            {
+                throw new UnauthorizedAccessException("Başka bir üyenin bilgilerini güncelleyemezsiniz");
+            }
+
+            var member = await _memberRepository.GetByIdAsync(memberId);
+
+            if(member == null)
+            {
+                throw new KeyNotFoundException("Üye bulunamadı");
+            }
+
+            member.FullName = dto.FullName;
+            member.Email = dto.Email;
+
+            if (!string.IsNullOrWhiteSpace(dto.NewPassword))
+            {
+                member.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+            }
+
+            _memberRepository.Update(member);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<MemberResponseDto> GetByIdAsync(int id)
+        {
+            var member = await _memberRepository.GetByIdAsync(id);
+            if(member == null)
+            {
+                throw new KeyNotFoundException("Üye bulunamadı");
+            }
+
+            return MapToResponseDto(member);
+            
+        }
     }
 }

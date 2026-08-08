@@ -11,5 +11,9 @@ namespace LibraryApi.Business.Interfaces.Services
     {
         Task<MemberResponseDto> RegisterAsync(RegisterMemberDto dto);
         Task<AuthResponseDto> LoginAsync(LoginDto dto);
+
+        Task UpdateAsync(int memberId, UpdateMemberDto dto, int requestingMemberId,bool isAdmin);
+
+        Task<MemberResponseDto> GetByIdAsync(int id);
     }
 }
