@@ -48,30 +48,20 @@ namespace LibraryApi.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CreateCategoryDto dto)
         {
-            try
-            {
+            
                 await _categoryService.UpdateAsync(id, dto);
                 return NoContent();
-            }
-            catch(KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
+            
         }
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
+           
                 await _categoryService.DeleteAsync(id);
                 return NoContent();
-            }
-            catch(KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
+            
 
         }
         

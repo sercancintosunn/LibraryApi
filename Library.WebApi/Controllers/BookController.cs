@@ -52,31 +52,19 @@ namespace LibraryApi.WebApi.Controllers
         public async Task<IActionResult> Update(int id, [FromBody]CreateBookDto dto)
         {
             
-
-            try
-            {
                 await _bookService.UpdateBookAsync(id,dto);
                 return NoContent()  ;
-            }
-            catch(KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
+            
         }
 
         [HttpDelete("{id}")]
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
+           
                 await _bookService.DeleteBookAsync(id);
                 return NoContent();
-            }
-            catch(KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
+            
         }
 
 

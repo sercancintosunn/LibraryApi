@@ -44,16 +44,9 @@ namespace LibraryApi.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]CreateLoanDto dto)
         {
-            try
-            {
                 var created = await _loanService.CreateLoanAsync(dto);
                 return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
-            }
-            catch(InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-
-            }
+            
         }
 
         [HttpPut("{id}/return")]
@@ -64,25 +57,9 @@ namespace LibraryApi.WebApi.Controllers
 
             var isAdmin = User.IsInRole("Admin");
 
-            try
-            {
                 await _loanService.ReturnLoanAsync(id, requestingMemberId, isAdmin);
                 return NoContent();
-            }
-            catch(KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
-            catch(UnauthorizedAccessException ex)
-            {
-                return StatusCode(403, new { message = ex.Message });
-
-            }
-            catch(InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-
-            }
+           
         }
 
     }

@@ -48,15 +48,11 @@ namespace LibraryApi.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(int id, [FromBody] CreateAuthorDto dto)
         {
-            try
-            {
+           
                 await _authorService.UpdateAsync(id, dto);
                 return NoContent();
-            }
-            catch(KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex });
-            }
+           
+            
 
         }
 
@@ -64,15 +60,10 @@ namespace LibraryApi.WebApi.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
+            
                 await _authorService.DeleteAsync(id);
                 return NoContent();
-            }
-            catch(KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex });
-            }
+           
         }
 
     }
