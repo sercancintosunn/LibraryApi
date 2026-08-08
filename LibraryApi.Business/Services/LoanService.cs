@@ -68,7 +68,7 @@ namespace LibraryApi.Business.Services
                 throw new KeyNotFoundException("Ödünç kaydı bulunamadı");
             }
 
-            if(isAdmin && loan.MemberId != requestingMemberId)
+            if(!isAdmin && loan.MemberId != requestingMemberId)
             {
                 throw new UnauthorizedAccessException("Bu ödünç kaydını iade etme hakkınız yok");
             }

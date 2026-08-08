@@ -2,6 +2,7 @@
 using LibraryApi.Business.DTOs.Categories;
 using LibraryApi.Business.Interfaces.Services;
 using LibraryApi.Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace LibraryApi.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
@@ -58,6 +60,7 @@ namespace LibraryApi.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             try
