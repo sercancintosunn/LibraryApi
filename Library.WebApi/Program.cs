@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using LibraryApi.Business.DTOs.Books;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +49,8 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateBookDtoValidator>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -70,6 +75,7 @@ builder.Services.AddScoped<ILoanService, LoanService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
