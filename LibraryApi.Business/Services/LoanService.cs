@@ -96,5 +96,16 @@ namespace LibraryApi.Business.Services
                 ReturnDate = loan.ReturnDate
             };
         }
+
+        public async Task<IEnumerable<LoanResponseDto>> GetAllAsync(int requestingMemberId, bool isAdmin)
+        {
+            var loans = await _loanRepository.GetAllAsync();
+
+            if (!isAdmin)
+            {
+                loans = loans.Where(l => l.MemberId == requestingMemberId);
+            }
+            return loans.Select(MapToResponseDto);
+        }
     }
 }

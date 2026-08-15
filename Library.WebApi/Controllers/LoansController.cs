@@ -22,7 +22,12 @@ namespace LibraryApi.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var loans = await _loanService.GetAllAsync();
+            var memberIdClaim = User.FindFirst("MemberId")?.Value;
+            var requestingMemberId = int.Parse(memberIdClaim!);
+            var isAdmin = User.IsInRole("Admin");
+
+
+            var loans = await _loanService.GetAllAsync(requestingMemberId,isAdmin);
             return Ok(loans);
 
         }
