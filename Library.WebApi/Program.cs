@@ -24,7 +24,7 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
             "http://localhost:5173",
-            "https://library-api-pink.vercel.app/login"    
+            "https://library-api-pink.vercel.app"    
         )
         .AllowAnyHeader()
         .AllowAnyMethod()
