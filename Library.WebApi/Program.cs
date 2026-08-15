@@ -22,7 +22,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins(
+            "http://localhost:5173",
+            "https://SENIN-FRONTEND-ADRESIN.azurestaticapps.net"    
+        )
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials();
@@ -93,18 +96,14 @@ app.UseMiddleware<LibraryApi.WebApi.Middleware.ExceptionHandlingMiddleware>();
 
 app.UseCors("AllowReactApp");
 
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseAuthorization();
 
 app.MapControllers();
 
