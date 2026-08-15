@@ -47,21 +47,64 @@ function BooksPage() {
 
 
     return (
-        <div className='container'>
-            <h1>Kütüphane Sistemi</h1>
-            {message && <p>{message}</p>}
-            <ul>
+        <main className="page-container">
+            <div className="page-header">
+                <div>
+                    <h1>Kütüphane</h1>
+                    <p>Kitapları görüntüle ve ödünç al.</p>
+                </div>
+
+                {isAdmin && (
+                    <a href="/add-book" className="btn btn-primary">
+                        + Kitap Ekle
+                    </a>
+                )}
+            </div>
+
+            {message && (
+                <div className="success-message">
+                    {message}
+                </div>
+            )}
+
+            <div className="books-list">
                 {books.map((book) => (
-                    <li key={book.id}>
-                        {book.title} - {book.authorName}
-                        <button onClick={() => handeBorrow(book.id)}>Ödünç Al</button>
-                        {isAdmin && (
-                            <button onClick={() => handleDelete(book.id)}>Sil</button>
-                        )}
-                    </li>
+                    <article className="book-card" key={book.id}>
+                        <div>
+                            <div className="book-icon">
+                                📖
+                            </div>
+
+                            <div className="book-title">
+                                {book.title}
+                            </div>
+
+                            <div className="book-author">
+                                {book.authorName}
+                            </div>
+                        </div>
+
+                        <div className="book-actions">
+                            <button
+                                className="btn btn-primary"
+                                onClick={() => handeBorrow(book.id)}
+                            >
+                                Ödünç Al
+                            </button>
+
+                            {isAdmin && (
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={() => handleDelete(book.id)}
+                                >
+                                    Sil
+                                </button>
+                            )}
+                        </div>
+                    </article>
                 ))}
-            </ul>
-        </div>
+            </div>
+        </main>
     )
 }
 

@@ -24,26 +24,110 @@ function RegisterPage() {
     }
 
     return (
-        <div className='login-wrapper'>
-            <form onSubmit={handleSubmit} className='login-form'>
-                <h1>Kütüphane Sistemi</h1>
-                <p className='subtitle'>Yeni hesap oluştur</p>
-                <div>
-                    <label>Ad Soyad</label>
-                    <input value={fullName} onChange={(e) => setFullName(e.target.value)} />
+        <div className="auth-page">
+            <div className="auth-background">
+                <div className="auth-shape auth-shape-one"></div>
+                <div className="auth-shape auth-shape-two"></div>
+            </div>
+
+            <div className="auth-card register-card">
+                <div className="auth-logo">
+                    📚
                 </div>
-                <div>
-                    <label htmlFor="">Email</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+
+                <div className="auth-header">
+                    <h1>Hesap Oluştur</h1>
+                    <p>LibraryHub'a katıl ve kütüphaneni yönet</p>
                 </div>
-                <div>
-                    <label htmlFor="">Şifre</label>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+
+                <form onSubmit={handleSubmit} className="auth-form">
+
+                    <div className="auth-field">
+                        <label htmlFor="fullName">
+                            Ad Soyad
+                        </label>
+
+                        <div className="input-wrapper">
+                            <span className="input-icon">👤</span>
+
+                            <input
+                                id="fullName"
+                                type="text"
+                                placeholder="Sercan Çintosun"
+                                value={fullName}
+                                onChange={(e) =>
+                                    setFullName(e.target.value)
+                                }
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div className="auth-field">
+                        <label htmlFor="register-email">
+                            Email
+                        </label>
+
+                        <div className="input-wrapper">
+                            <span className="input-icon">✉</span>
+
+                            <input
+                                id="register-email"
+                                type="email"
+                                placeholder="ornek@email.com"
+                                value={email}
+                                onChange={(e) =>
+                                    setEmail(e.target.value)
+                                }
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div className="auth-field">
+                        <label htmlFor="register-password">
+                            Şifre
+                        </label>
+
+                        <div className="input-wrapper">
+                            <span className="input-icon">🔒</span>
+
+                            <input
+                                id="register-password"
+                                type="password"
+                                placeholder="••••••••"
+                                value={password}
+                                onChange={(e) =>
+                                    setPassword(e.target.value)
+                                }
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    {error && (
+                        <div className="auth-error">
+                            <span>!</span>
+                            {error}
+                        </div>
+                    )}
+
+                    <button
+                        type="submit"
+                        className="auth-submit"
+                    >
+                        Hesap Oluştur
+                    </button>
+                </form>
+
+                <div className="auth-footer">
+                    <span>Zaten hesabın var mı?</span>
+
+                    <Link to="/login">
+                        Giriş Yap
+                    </Link>
                 </div>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type='submit'>Kayıt Ol</button>
-                <p style={{ marginTop: '1rem', fontSize: '0.85rem' }}>Zaten hesabın var mı? <Link to={"/login"}>Giriş Yap</Link></p>
-            </form>
+            </div>
         </div>
     )
 }

@@ -14,22 +14,54 @@ function Navbar() {
     }
 
     return (
-        <nav style={{ display: 'flex', gap: '1rem', padding: '1rem', borderBottom: '1px solid #ccc' }}>
-            <Link to="/">Kitaplar</Link>
-            <Link to="/add-book">Kitap Ekle</Link>
-            <Link to="/loans">Ödünç Kayıtları</Link>
-            <Link to="/authors">Yazarlar</Link>
-            <Link to="/categories">Kategoriler</Link>
-            {currentUser ? (
-                <>
-                    <span>Hoşgeldin,{currentUser.fullName}</span>
-                    <button onClick={handleLogout}>Çıkış Yap</button>
-                </>
-            ) : (
-                <Link to="/login">Giriş Yap</Link>
-            )
+        <nav className="main-navbar">
+            <Link to="/" className="navbar-brand">
+                <span className="navbar-logo">📚</span>
+                LibraryHub
+            </Link>
 
-            }
+            <div className="navbar-links">
+                <Link to="/" className="nav-link">
+                    Kitaplar
+                </Link>
+
+                <Link to="/add-book" className="nav-link">
+                    Kitap Ekle
+                </Link>
+
+                <Link to="/loans" className="nav-link">
+                    Ödünç Kayıtları
+                </Link>
+
+                <Link to="/authors" className="nav-link">
+                    Yazarlar
+                </Link>
+
+                <Link to="/categories" className="nav-link">
+                    Kategoriler
+                </Link>
+            </div>
+
+            <div className="navbar-user">
+                {currentUser ? (
+                    <>
+                        <span className="user-name">
+                            Hoş geldin, {currentUser.fullName}
+                        </span>
+
+                        <button
+                            className="logout-button"
+                            onClick={handleLogout}
+                        >
+                            Çıkış Yap
+                        </button>
+                    </>
+                ) : (
+                    <Link to="/login" className="nav-link">
+                        Giriş Yap
+                    </Link>
+                )}
+            </div>
         </nav>
     )
 }

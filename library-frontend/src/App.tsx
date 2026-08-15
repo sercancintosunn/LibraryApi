@@ -11,6 +11,7 @@ import AddCategoryPage from "./pages/AddCategoryPage";
 import AuthorsPage from "./pages/AuthorsPage";
 import CategoriesPage from "./pages/CategoriesPage";
 import RegisterPage from "./pages/RegisterPage";
+import "./App.css"
 
 function App() {
   return (
