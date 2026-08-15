@@ -26,39 +26,47 @@ function LoansPage() {
 
 
     return (
-        <div className='container'>
-            <h1>Ödünç Kayıtları</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Kitap</th>
-                        <th>Üye</th>
-                        <th>Ödünç Tarihi</th>
-                        <th>İade Tarihi</th>
-                        <th></th>
+        <div className="page-container">
+            <div className="page-header">
+                <div>
+                    <h1>Ödünç Kayıtları</h1>
+                </div>
+            </div>
 
-                    </tr>
-                </thead>
-            </table>
-            <tbody>
-                {loans.map((loan) => (
-                    <tr key={loan.id}>
-                        <td>{loan.bookTitle}</td>
-                        <td>{loan.memberName}</td>
-                        <td>{new Date(loan.loanDate).toLocaleDateString('tr-TR')}</td>
-                        <td>
-                            {loan.returnDate
-                                ? new Date(loan.returnDate).toLocaleDateString('tr-TR')
-                                : 'İade edilmedi'}
-                        </td>
-                        <td>
-                            {!loan.returnDate && (
-                                <button onClick={() => handleReturn(loan.id)}>İade Et</button>
-                            )}
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
+            <div className="data-table-wrapper">
+                <table className="data-table">
+                    <thead>
+                        <tr>
+                            <th>Kitap</th>
+                            <th>Üye</th>
+                            <th>Ödünç Tarihi</th>
+                            <th>İade Tarihi</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {loans.map((loan) => (
+                            <tr key={loan.id}>
+                                <td>{loan.bookTitle}</td>
+                                <td>{loan.memberName}</td>
+                                <td>{new Date(loan.loanDate).toLocaleDateString('tr-TR')}</td>
+                                <td>
+                                    {loan.returnDate
+                                        ? new Date(loan.returnDate).toLocaleDateString('tr-TR')
+                                        : 'İade edilmedi'}
+                                </td>
+                                <td>
+                                    {!loan.returnDate && (
+                                        <button className="btn btn-secondary" onClick={() => handleReturn(loan.id)}>
+                                            İade Et
+                                        </button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }

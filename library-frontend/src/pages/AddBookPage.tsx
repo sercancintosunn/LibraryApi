@@ -44,46 +44,52 @@ function AddBookPage() {
     }
 
     return (
-        <div className='container'>
-            <h1>Kitap Ekle</h1>
-            <form onSubmit={handleSubmit}>
+        <div className="page-container">
+            <div className="page-header">
                 <div>
-                    <label htmlFor="">Kitap Adı</label>
-                    <input value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <h1>Kitap Ekle</h1>
+                    <p>Kütüphaneye yeni bir kitap ekle</p>
                 </div>
+            </div>
 
-                <div>
-                    <label htmlFor="">ISBN (opsiyonel)</label>
-                    <input value={isbn} onChange={(e) => setIsbn(e.target.value)} />
-                </div>
+            <div className="form-card">
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label>Kitap Adı</label>
+                        <input value={title} onChange={(e) => setTitle(e.target.value)} />
+                    </div>
 
-                <div>
-                    <label htmlFor="">Yazar</label>
-                    <select value={authorId} onChange={(e) => setAuthorId(e.target.value)}>
-                        <option value="">-- Seçiniz --</option>
-                        {authors.map((author) => (
-                            <option key={author.id} value={author.id}>{author.fullName}</option>
-                        ))}
-                    </select>
-                    <Link to='/add-author'>+ Yeni yazar Ekle</Link>
-                </div>
+                    <div className="form-group">
+                        <label>ISBN (opsiyonel)</label>
+                        <input value={isbn} onChange={(e) => setIsbn(e.target.value)} />
+                    </div>
 
-                <div>
-                    <label htmlFor="">Kategori</label>
-                    <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
-                        <option value="">-- Seçiniz --</option>
-                        {categories.map((category) => (
-                            <option key={category.id} value={category.id}>{category.name}</option>
-                        ))}
-                    </select>
-                    <Link to='/add-category'>+ Yeni kategori ekle</Link>
-                </div>
+                    <div className="form-group">
+                        <label>Yazar</label>
+                        <select value={authorId} onChange={(e) => setAuthorId(e.target.value)}>
+                            <option value="">-- Seçiniz --</option>
+                            {authors.map((author) => (
+                                <option key={author.id} value={author.id}>{author.fullName}</option>
+                            ))}
+                        </select>
+                        <Link to="/add-author">+ Yeni yazar ekle</Link>
+                    </div>
 
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type='submit'>Kaydet</button>
+                    <div className="form-group">
+                        <label>Kategori</label>
+                        <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+                            <option value="">-- Seçiniz --</option>
+                            {categories.map((category) => (
+                                <option key={category.id} value={category.id}>{category.name}</option>
+                            ))}
+                        </select>
+                        <Link to="/add-category">+ Yeni kategori ekle</Link>
+                    </div>
 
-
-            </form>
+                    {error && <div className="error-message">{error}</div>}
+                    <button className="btn btn-primary" type="submit">Kaydet</button>
+                </form>
+            </div>
         </div>
     )
 }

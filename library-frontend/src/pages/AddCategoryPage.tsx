@@ -21,16 +21,22 @@ function AddCategoryPage() {
 
     }
     return (
-        <div className='container'>
-            <h1>Kategori Ekle</h1>
-            <form onSubmit={handleSubmit}>
+        <div className="page-container">
+            <div className="page-header">
                 <div>
-                    <label htmlFor="">Kategori Adı</label>
-                    <input value={name} onChange={(e) => setName(e.target.value)} />
+                    <h1>Kategori Ekle</h1>
                 </div>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type='submit'>Kaydet</button>
-            </form>
+            </div>
+            <div className="form-card">
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label>Kategori Adı</label>
+                        <input value={name} onChange={(e) => setName(e.target.value)} />
+                    </div>
+                    {error && <div className="error-message">{error}</div>}
+                    <button className="btn btn-primary" type="submit">Kaydet</button>
+                </form>
+            </div>
         </div>
     )
 }

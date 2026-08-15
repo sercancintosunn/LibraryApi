@@ -243,9 +243,7 @@
     background: #e4e7ec;
 }
 
-/* =========================
-   Forms
-========================= */
+
 
 .form-card {
     width: min(600px, 100%);
@@ -289,9 +287,7 @@
     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.10);
 }
 
-/* =========================
-   Messages
-========================= */
+
 
 .success-message {
     margin-bottom: 20px;
@@ -315,9 +311,7 @@
     font-weight: 500;
 }
 
-/* =========================
-   Tables
-========================= */
+
 
 .data-table-wrapper {
     overflow: hidden;
@@ -363,9 +357,7 @@
     border-bottom: 0;
 }
 
-/* =========================
-   Responsive
-========================= */
+
 
 @media (max-width: 900px) {
     .main-navbar {

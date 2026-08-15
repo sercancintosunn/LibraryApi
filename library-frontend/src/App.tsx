@@ -13,6 +13,7 @@ import CategoriesPage from "./pages/CategoriesPage";
 import RegisterPage from "./pages/RegisterPage";
 import "./App.css"
 
+
 function App() {
   return (
     <AuthProvider>
@@ -46,7 +47,7 @@ function App() {
             }
           />
           <Route
-            path="/add-authors"
+            path="/add-author"
             element={
               <ProtectedRoute>
                 <AddAuthorPage />

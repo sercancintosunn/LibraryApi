@@ -2,7 +2,7 @@ import axios from 'axios'
 import { getToken } from './authStorage'
 
 const axiosClient = axios.create({
-    baseURL: 'http://localhost:5127/api',
+    baseURL: import.meta.env.VITE_API_URL,
 })
 
 axiosClient.interceptors.request.use((config) => {

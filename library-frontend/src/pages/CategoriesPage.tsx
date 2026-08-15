@@ -33,19 +33,38 @@ function CategoriesPage() {
 
 
     return (
-        <div className='container'>
-            <h1>Kategoriler</h1>
-            <Link to="/add-category">+ Yeni Kategori Ekle</Link>
-            <ul>
-                {categories.map((category) => (
-                    <li key={category.id}>
-                        {category.name}{' '}
-                        {isAdmin && (
-                            <button onClick={() => handleDelete(category.id)}>Sil</button>
-                        )}
-                    </li>
-                ))}
-            </ul>
+        <div className="page-container">
+            <div className="page-header">
+                <div>
+                    <h1>Kategoriler</h1>
+                </div>
+                <Link className="btn btn-primary" to="/add-category">+ Yeni Kategori</Link>
+            </div>
+
+            <div className="data-table-wrapper">
+                <table className="data-table">
+                    <thead>
+                        <tr>
+                            <th>Ad</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {categories.map((category) => (
+                            <tr key={category.id}>
+                                <td>{category.name}</td>
+                                <td>
+                                    {isAdmin && (
+                                        <button className="btn btn-danger" onClick={() => handleDelete(category.id)}>
+                                            Sil
+                                        </button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }

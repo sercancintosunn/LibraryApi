@@ -30,19 +30,38 @@ function AuthorsPage() {
         }
     }
     return (
-        <div className='container'>
-            <h1>Yazarlar</h1>
-            <Link to='/add-authors'>+ Yeni Yazar Ekle</Link>
-            <ul>
-                {authors.map((author) => (
-                    <li key={author.id}>
-                        {author.fullName}{' '}
-                        {isAdmin && (
-                            <button onClick={() => handleDelete(author.id)}>Sil</button>
-                        )}
-                    </li>
-                ))}
-            </ul>
+        <div className="page-container">
+            <div className="page-header">
+                <div>
+                    <h1>Yazarlar</h1>
+                </div>
+                <Link className="btn btn-primary" to="/add-author">+ Yeni Yazar</Link>
+            </div>
+
+            <div className="data-table-wrapper">
+                <table className="data-table">
+                    <thead>
+                        <tr>
+                            <th>Ad Soyad</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {authors.map((author) => (
+                            <tr key={author.id}>
+                                <td>{author.fullName}</td>
+                                <td>
+                                    {isAdmin && (
+                                        <button className="btn btn-danger" onClick={() => handleDelete(author.id)}>
+                                            Sil
+                                        </button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }
