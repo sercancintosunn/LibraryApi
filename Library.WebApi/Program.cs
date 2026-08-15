@@ -24,7 +24,7 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
             "http://localhost:5173",
-            "https://SENIN-FRONTEND-ADRESIN.azurestaticapps.net"    
+            "https://KENDI-VERCEL-ADRESIN.vercel.app"    
         )
         .AllowAnyHeader()
         .AllowAnyMethod()
