@@ -1,4 +1,4 @@
-name: Publish
+name: Publish Library API
 
 on:
   workflow_dispatch:
@@ -11,22 +11,29 @@ jobs:
 
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0.x'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Restore
-      run: dotnet restore ./LibraryApi.slnx
+      - name: Restore
+        run: dotnet restore ./LibraryApi.slnx
 
-    - name: Build
-    
-      run: dotnet build ./LibraryApi.slnx --configuration Release
+      - name: Build
+        run: dotnet build ./LibraryApi.slnx --configuration Release --no-restore
 
-    - name: Publish
-      run: dotnet publish ./LibraryApi.slnx --configuration Release --no-build
+      - name: Publish API
+        run: dotnet publish ./Library.WebApi/LibraryApi.WebApi.csproj --configuration Release --no-build --output ./publish
+      
+      - name: Deploy to Azure
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: library-hub
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: './publish'
   
   
   
