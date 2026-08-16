@@ -12,5 +12,7 @@ namespace LibraryApi.Business.Interfaces.Repositories
         Task<Loan?> GetActiveLoanByMemberAsync(int memberId);
         new Task<Loan?> GetByIdAsync(int id);
         new Task<IEnumerable<Loan>> GetAllAsync();
+
+        Task<Loan?> GetActiveLoanByBookIdAsync(int bookId);
     }
 }

@@ -37,5 +37,11 @@ namespace LibraryApi.DataAccess.Repositories
                 .Include(l => l.Member)
                 .ToListAsync();
         }
+
+        public async Task<Loan?> GetActiveLoanByBookIdAsync(int bookId)
+        {
+            return await _dbSet
+                .FirstOrDefaultAsync(l => l.BookId == bookId && l.ReturnDate == null);
+        }
     }
 }

@@ -24,11 +24,17 @@ namespace LibraryApi.Business.Services
 
         public async Task<LoanResponseDto> CreateLoanAsync(CreateLoanDto dto)
         {
-            var activeLoan = await _loanRepository.GetActiveLoanByMemberAsync(dto.MemberId);
+            var memberActiveLoan = await _loanRepository.GetActiveLoanByMemberAsync(dto.MemberId);
 
-            if(activeLoan != null)
+            if(memberActiveLoan != null)
             {
                 throw new InvalidOperationException("Bu üyenin iade etmediği kitap var");
+            }
+
+            var bookActiveLoan = await _loanRepository.GetActiveLoanByBookIdAsync(dto.BookId);
+            if(bookActiveLoan != null)
+            {
+                throw new InvalidOperationException("Bu kitap şu anda başka bir üyede. Kitap iade edilene kadar ödünç alınamaz");
             }
 
             var newLoan = new Loan
