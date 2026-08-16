@@ -25,8 +25,9 @@ function BooksPage() {
         try {
             await createLoan({ bookId, memberId: currentUser.id })
             setMessage('Kitap başarıyla ödünç alındı')
-        } catch (err) {
-            setMessage("Ödünç alma başarısız.Muhtemelen iade edilnmemiş bir kitabınız var")
+        } catch (err: any) {
+            const message = err.response?.data?.message || "Ödünç alma başarısız"
+            setMessage(message)
         }
 
     }
