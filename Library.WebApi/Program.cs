@@ -16,6 +16,11 @@ using LibraryApi.Business.DTOs.Books;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var renderPort = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrWhiteSpace(renderPort))
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{renderPort}");
+}
 
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
@@ -132,5 +137,6 @@ app.UseAuthorization();
 
 
 app.MapControllers();
+app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
 
 app.Run();

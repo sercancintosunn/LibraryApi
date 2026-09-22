@@ -1,0 +1,14 @@
+.git
+.github
+.vs
+.vscode
+**/bin
+**/obj
+**/node_modules
+library-frontend
+work
+outputs
+*.user
+*.suo
+*.mdf
+*.ldf
