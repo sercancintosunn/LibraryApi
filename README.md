@@ -244,9 +244,3 @@ npm run lint
 npm run build
 ```
 
-## Güvenlik notları
-
-- Veritabanı bağlantı bilgilerini ve JWT anahtarını Git'e eklemeyin.
-- Üretimde uzun ve rastgele bir JWT anahtarı kullanın.
-- Azure SQL güvenlik duvarında yalnızca gerekli çıkış IP aralıklarına izin verin.
-- Yönetici işlemlerini yalnızca `Admin` rolüne sahip kullanıcılarla gerçekleştirin.
