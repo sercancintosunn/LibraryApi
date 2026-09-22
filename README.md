@@ -9,12 +9,17 @@ LibraryHub; kitap, yazar, kategori, üye ve ödünç kayıtlarını yönetmek i�
 
 ## Canlı uygulama
 
-- **Frontend:** [library-api-pink.vercel.app](https://library-api-pink.vercel.app)
-- **Backend:** [library-api-sercan.onrender.com](https://library-api-sercan.onrender.com)
-- **Swagger:** [library-api-sercan.onrender.com/swagger](https://library-api-sercan.onrender.com/swagger)
-- **Sağlık kontrolü:** [library-api-sercan.onrender.com/health](https://library-api-sercan.onrender.com/health)
+[LibraryHub uygulamasını aç](https://library-api-pink.vercel.app)
 
-> Backend, Render'ın ücretsiz planında çalışır. Servis kullanılmadığında uykuya geçebileceği için ilk istek yaklaşık 50-60 saniye sürebilir.
+## Ekran görüntüleri
+
+### Giriş
+
+![LibraryHub giriş ekranı](docs/screenshots/login.jpg)
+
+### Kayıt
+
+![LibraryHub kayıt ekranı](docs/screenshots/register.jpg)
 
 ## Özellikler
 
@@ -245,4 +250,3 @@ npm run build
 - Üretimde uzun ve rastgele bir JWT anahtarı kullanın.
 - Azure SQL güvenlik duvarında yalnızca gerekli çıkış IP aralıklarına izin verin.
 - Yönetici işlemlerini yalnızca `Admin` rolüne sahip kullanıcılarla gerçekleştirin.
-
