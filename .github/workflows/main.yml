@@ -1,14 +1,17 @@
-name: Publish Library API
+name: Build LibraryHub
 
 on:
   workflow_dispatch:
   push:
     branches:
-    - main
-jobs:
-  publish:
-    runs-on: ubuntu-latest
+      - main
+  pull_request:
+    branches:
+      - main
 
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -19,21 +22,23 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Restore
+      - name: Restore backend
         run: dotnet restore ./LibraryApi.slnx
 
-      - name: Build
+      - name: Build backend
         run: dotnet build ./LibraryApi.slnx --configuration Release --no-restore
 
-      - name: Publish API
-        run: dotnet publish ./Library.WebApi/LibraryApi.WebApi.csproj --configuration Release --no-build --output ./publish
-      
-      - name: Deploy to Azure
-        uses: azure/webapps-deploy@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          app-name: library-hub
-          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-          package: './publish'
-  
-  
-  
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: library-frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: library-frontend
+
+      - name: Build frontend
+        run: npm run build
+        working-directory: library-frontend
