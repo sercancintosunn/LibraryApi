@@ -9,5 +9,7 @@ namespace LibraryApi.Business.Interfaces.Repositories
 {
     public interface IMemberRepository : IGenericRepository<Member>
     {
+        Task<Member?> GetByEmailAsync(string email);
+        Task<bool> EmailExistsAsync(string email);
     }
 }

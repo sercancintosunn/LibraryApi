@@ -24,6 +24,14 @@ namespace LibraryApi.DataAccess.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Member>()
+                .Property(member => member.Email)
+                .HasMaxLength(256);
+
+            modelBuilder.Entity<Member>()
+                .HasIndex(member => member.Email)
+                .IsUnique();
+
             modelBuilder.Entity<Loan>()
                 .HasOne(l => l.Member)
                 .WithMany(m => m.Loans)

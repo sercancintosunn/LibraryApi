@@ -1,6 +1,7 @@
 ﻿using LibraryApi.Business.Interfaces.Repositories;
 using LibraryApi.DataAccess.Data;
 using LibraryApi.Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,11 @@ namespace LibraryApi.DataAccess.Repositories
         public MemberRepository(LibraryDbContext context) : base(context)
         {
         }
+
+        public Task<Member?> GetByEmailAsync(string email) =>
+            _context.Members.AsNoTracking().FirstOrDefaultAsync(member => member.Email == email);
+
+        public Task<bool> EmailExistsAsync(string email) =>
+            _context.Members.AnyAsync(member => member.Email == email);
     }
 }

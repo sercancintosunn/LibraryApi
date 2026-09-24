@@ -1,5 +1,6 @@
 ﻿using LibraryApi.Business.DTOs.Loans;
 using LibraryApi.Business.Interfaces;
+using LibraryApi.Business.Exceptions;
 using LibraryApi.Business.Interfaces.Repositories;
 using LibraryApi.Business.Interfaces.Services;
 using LibraryApi.Entities.Models;
@@ -28,13 +29,13 @@ namespace LibraryApi.Business.Services
 
             if(memberActiveLoan != null)
             {
-                throw new InvalidOperationException("Bu üyenin iade etmediği kitap var");
+                throw new BusinessRuleException("Bu üyenin iade etmediği kitap var");
             }
 
             var bookActiveLoan = await _loanRepository.GetActiveLoanByBookIdAsync(dto.BookId);
             if(bookActiveLoan != null)
             {
-                throw new InvalidOperationException("Bu kitap şu anda başka bir üyede. Kitap iade edilene kadar ödünç alınamaz");
+                throw new BusinessRuleException("Bu kitap şu anda başka bir üyede. Kitap iade edilene kadar ödünç alınamaz");
             }
 
             var newLoan = new Loan
@@ -81,7 +82,7 @@ namespace LibraryApi.Business.Services
 
             if(loan.ReturnDate != null)
             {
-                throw new InvalidOperationException("Bu kitap zaten iade edilmiş");
+                throw new BusinessRuleException("Bu kitap zaten iade edilmiş");
             }
 
             loan.ReturnDate = DateTime.UtcNow;

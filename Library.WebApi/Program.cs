@@ -37,10 +37,19 @@ builder.Services.AddCors(options =>
     });
 });
 builder.Services.AddDbContext<LibraryDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlServer => sqlServer.EnableRetryOnFailure(
+            maxRetryCount: 2,
+            maxRetryDelay: TimeSpan.FromSeconds(2),
+            errorNumbersToAdd: null)));
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var secretKey = jwtSettings["SecretKey"]!;
+var secretKey = jwtSettings["SecretKey"];
+if (string.IsNullOrWhiteSpace(secretKey) || Encoding.UTF8.GetByteCount(secretKey) < 32)
+{
+    throw new InvalidOperationException("JwtSettings:SecretKey ortam değişkeni en az 32 bayt olmalıdır.");
+}
 
 builder.Services.AddAuthentication(options =>
 {
@@ -137,6 +146,10 @@ app.UseAuthorization();
 
 
 app.MapControllers();
-app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
+app.MapGet("/live", () => Results.Ok(new { status = "healthy" }));
+app.MapGet("/health", async (LibraryDbContext db, CancellationToken cancellationToken) =>
+    await db.Database.CanConnectAsync(cancellationToken)
+        ? Results.Ok(new { status = "healthy" })
+        : Results.StatusCode(StatusCodes.Status503ServiceUnavailable));
 
 app.Run();

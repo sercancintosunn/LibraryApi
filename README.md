@@ -220,6 +220,11 @@ API, `http://localhost:8080` adresinden erişilebilir olur.
 | `JwtSettings__Audience` | Token hedef kitlesi |
 | `PORT` | Hosting sağlayıcısının atadığı HTTP portu |
 
+`JwtSettings__SecretKey` artık depodaki `appsettings.json` içinde bulunmaz. En az 32 baytlık,
+rastgele üretilmiş bir değeri Render ortam değişkeni olarak tanımlayın. Depoda önceden
+bulunan anahtar herkese açık olduğu için canlı ortamda kullanılmamalıdır. Canlı anahtarı
+değiştirmek mevcut oturumları geçersiz kılar.
+
 ### Frontend
 
 | Değişken | Örnek |
@@ -227,6 +232,31 @@ API, `http://localhost:8080` adresinden erişilebilir olur.
 | `VITE_API_URL` | `https://library-api-sercan.onrender.com/api` |
 
 `VITE_` önekli değişkenler tarayıcıya dahil edilir. Bu değişkenlerde parola veya gizli anahtar saklamayın.
+
+### Canlı ortamı güncelleme
+
+1. Render'da `JwtSettings__SecretKey` ortam değişkeninin tanımlı ve depoda yayımlanmış
+   anahtardan farklı olduğunu doğrulayın. `JwtSettings__Issuer` ve
+   `JwtSettings__Audience` değerleri de Render'da tanımlı olmalıdır;
+   `JwtSettings__ExpirationInMinutes` için `appsettings.json` varsayılanı kullanılabilir.
+2. Azure SQL bağlantı dizesini yalnız güvenli yerel/CI ortamında
+   `ConnectionStrings__DefaultConnection` olarak tanımlayıp yeni migration'ı uygulayın:
+
+   ```bash
+   dotnet ef database update --project LibraryApi.DataAccess --startup-project Library.WebApi
+   ```
+
+   Migration, 256 karakterden uzun veya yinelenen üye e-postaları varsa durur; önce bu
+   kayıtları inceleyin. Render çalışma imajı .NET SDK içermediği için migration komutunu
+   o konteynerin içinde çalıştırmayın.
+3. Backend ve frontend değişikliklerini dağıtın. `/live` yalnız işlemin çalıştığını,
+   `/health` ise veritabanı bağlantısının da kurulabildiğini bildirir. Render'ın süreç
+   sağlık kontrolü için `/live`, veritabanı izleme için `/health` kullanın.
+
+Render Free boşta kalan servisi kapatır; sonraki istek 50 saniyeden uzun sürebilir.
+Kod değişiklikleri bu soğuk başlatmayı ortadan kaldırmaz. Azure SQL ücretsiz veritabanı
+aylık sınırına ulaşıp duraklatılmışsa retry de erişimi geri getiremez; Azure portalındaki
+veritabanı durumunu ve kalan ücretsiz kullanım miktarını kontrol edin.
 
 ## Derleme ve kontrol
 

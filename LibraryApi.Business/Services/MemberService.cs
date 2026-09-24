@@ -1,5 +1,6 @@
 ﻿using BCrypt.Net;
 using LibraryApi.Business.DTOs.Members;
+using LibraryApi.Business.Exceptions;
 using LibraryApi.Business.Interfaces;
 using LibraryApi.Business.Interfaces.Repositories;
 using LibraryApi.Business.Interfaces.Services;
@@ -29,12 +30,11 @@ namespace LibraryApi.Business.Services
 
         public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
         {
-            var members = await _memberRepository.GetAllAsync();
-            var member = members.FirstOrDefault(m => m.Email == dto.Email);
+            var member = await _memberRepository.GetByEmailAsync(dto.Email.Trim());
 
             if(member == null || !BCrypt.Net.BCrypt.Verify(dto.Password, member.PasswordHash))
             {
-                throw new UnauthorizedAccessException("Email veya Şifre Hatalı");
+                throw new InvalidCredentialsException();
             }
 
             var token = _tokenService.GenerateToken(member);
@@ -48,16 +48,16 @@ namespace LibraryApi.Business.Services
 
         public async Task<MemberResponseDto> RegisterAsync(RegisterMemberDto dto)
         {
-            var existingMembers = await _memberRepository.GetAllAsync();
-            if(existingMembers.Any(m => m.Email == dto.Email))
+            var email = dto.Email.Trim();
+            if(await _memberRepository.EmailExistsAsync(email))
             {
-                throw new InvalidOperationException("Bu email ile zaten biri kayıtlı");
+                throw new DuplicateEmailException();
             }
 
             var member = new Member
             {
                 FullName = dto.FullName,
-                Email = dto.Email,
+                Email = email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Role = "Member"
             };
@@ -95,7 +95,7 @@ namespace LibraryApi.Business.Services
             }
 
             member.FullName = dto.FullName;
-            member.Email = dto.Email;
+            member.Email = dto.Email.Trim();
 
             if (!string.IsNullOrWhiteSpace(dto.NewPassword))
             {

@@ -4,7 +4,7 @@ import BooksPage from "./pages/BooksPage";
 import Navbar from './components/Navbar';
 import AddBookPage from "./pages/AddBookPage";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthProvider";
 import LoansPage from "./pages/LoansPage";
 import AddAuthorPage from "./pages/AddAuthorPage";
 import AddCategoryPage from "./pages/AddCategoryPage";
