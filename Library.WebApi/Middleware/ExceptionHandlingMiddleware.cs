@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using LibraryApi.Business.Exceptions;
 
 namespace LibraryApi.WebApi.Middleware
 {
@@ -30,18 +31,19 @@ namespace LibraryApi.WebApi.Middleware
 
         public static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var statusCode = exception switch
+            var (statusCode, message) = exception switch
             {
-                KeyNotFoundException => HttpStatusCode.NotFound,
-                UnauthorizedAccessException => HttpStatusCode.Forbidden,
-                InvalidOperationException => HttpStatusCode.BadRequest,
-                _ => HttpStatusCode.InternalServerError
-
+                InvalidCredentialsException => (HttpStatusCode.Unauthorized, exception.Message),
+                DuplicateEmailException => (HttpStatusCode.Conflict, exception.Message),
+                BusinessRuleException => (HttpStatusCode.BadRequest, exception.Message),
+                KeyNotFoundException => (HttpStatusCode.NotFound, exception.Message),
+                UnauthorizedAccessException => (HttpStatusCode.Forbidden, exception.Message),
+                _ => (HttpStatusCode.InternalServerError, "İşlem sırasında bir hata oluştu. Lütfen daha sonra tekrar deneyin.")
             };
 
             var response = new
             {
-                message = exception.Message
+                message
             };
 
             context.Response.ContentType = "application/json";

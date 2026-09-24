@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
-import { register } from '../api/authApi'
+import { register, warmApi } from '../api/authApi'
 
 function RegisterPage() {
 
@@ -8,18 +9,30 @@ function RegisterPage() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+    const [submitting, setSubmitting] = useState(false)
     const navigate = useNavigate()
+
+    useEffect(() => {
+        warmApi()
+    }, [])
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         setError('')
+        setSubmitting(true)
 
         try {
-            await register({ fullName, email, password })
-            navigate("/login")
-        } catch (err: any) {
-            const message = err.response?.data?.message || "Kayıt olurken bir hata oluştu"
-            setError(message)
+            await register({ fullName: fullName.trim(), email: email.trim(), password })
+            navigate('/login', { state: { registered: true } })
+        } catch (err) {
+            const status = axios.isAxiosError(err) ? err.response?.status : undefined
+            setError(status === 409
+                ? 'Bu email ile zaten biri kayıtlı'
+                : status === 400
+                    ? 'Kayıt bilgilerini kontrol edin.'
+                    : 'Şu anda kayıt olunamıyor. Lütfen biraz sonra tekrar deneyin.')
+        } finally {
+            setSubmitting(false)
         }
     }
 
@@ -106,7 +119,7 @@ function RegisterPage() {
                     </div>
 
                     {error && (
-                        <div className="auth-error">
+                        <div className="auth-error" role="alert">
                             <span>!</span>
                             {error}
                         </div>
@@ -115,8 +128,9 @@ function RegisterPage() {
                     <button
                         type="submit"
                         className="auth-submit"
+                        disabled={submitting}
                     >
-                        Hesap Oluştur
+                        {submitting ? 'Hesap oluşturuluyor...' : 'Hesap Oluştur'}
                     </button>
                 </form>
 

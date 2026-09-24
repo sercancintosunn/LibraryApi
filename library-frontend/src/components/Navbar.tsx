@@ -1,15 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
-import { removeToken } from "../api/authStorage";
 import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
 
     const navigate = useNavigate()
-    const { currentUser, refreshUser } = useAuth()
+    const { currentUser, signOut } = useAuth()
 
-    async function handleLogout() {
-        removeToken()
-        await refreshUser()
+    function handleLogout() {
+        signOut()
         navigate('/login')
     }
 

@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../api/authApi';
-import { saveToken } from '../api/authStorage';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { login, warmApi } from '../api/authApi';
 import { useAuth } from '../context/AuthContext';
 
 
@@ -11,20 +11,32 @@ function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+    const [submitting, setSubmitting] = useState(false)
     const navigate = useNavigate()
-    const { refreshUser } = useAuth()
+    const location = useLocation()
+    const { signIn } = useAuth()
+    const registrationSucceeded = (location.state as { registered?: boolean } | null)?.registered
+
+    useEffect(() => {
+        warmApi()
+    }, [])
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         setError('')
+        setSubmitting(true)
 
         try {
-            const result = await login({ email, password })
-            saveToken(result.token)
-            await refreshUser()
+            const result = await login({ email: email.trim(), password })
+            signIn(result)
             navigate('/')
         } catch (err) {
-            setError('Email veya şifre hatalı')
+            const status = axios.isAxiosError(err) ? err.response?.status : undefined
+            setError(status === 401 || status === 403
+                ? 'Email veya şifre hatalı'
+                : 'Şu anda giriş yapılamıyor. Lütfen biraz sonra tekrar deneyin.')
+        } finally {
+            setSubmitting(false)
         }
     }
 
@@ -46,6 +58,12 @@ function LoginPage() {
                 </div>
 
                 <form onSubmit={handleSubmit} className="auth-form">
+
+                    {registrationSucceeded && (
+                        <div className="auth-success" role="status">
+                            Hesabın oluşturuldu. Şimdi giriş yapabilirsin.
+                        </div>
+                    )}
 
                     <div className="auth-field">
                         <label htmlFor="email">
@@ -86,7 +104,7 @@ function LoginPage() {
                     </div>
 
                     {error && (
-                        <div className="auth-error">
+                        <div className="auth-error" role="alert">
                             <span>!</span>
                             {error}
                         </div>
@@ -95,8 +113,9 @@ function LoginPage() {
                     <button
                         type="submit"
                         className="auth-submit"
+                        disabled={submitting}
                     >
-                        Giriş Yap
+                        {submitting ? 'Giriş yapılıyor...' : 'Giriş Yap'}
                     </button>
                 </form>
 

@@ -13,7 +13,8 @@ namespace LibraryApi.Business.DTOs.Members
         {
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Email boş olamaz")
-                .EmailAddress().WithMessage("Geçerli bir email adresi giriniz");
+                .EmailAddress().WithMessage("Geçerli bir email adresi giriniz")
+                .MaximumLength(256).WithMessage("Email en fazla 256 karakter olabilir");
 
             RuleFor(x => x.Password)
                 .NotEmpty().WithMessage("Şifre boş olamaz");

@@ -1,5 +1,9 @@
 ﻿using LibraryApi.Business.Interfaces;
 using LibraryApi.DataAccess.Data;
+using LibraryApi.Business.Exceptions;
+using LibraryApi.Entities.Models;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +22,16 @@ namespace LibraryApi.DataAccess
         }
         public async Task<int> SaveChangesAsync()
         {
-            return await _context.SaveChangesAsync();
+            try
+            {
+                return await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException exception) when (
+                exception.GetBaseException() is SqlException { Number: 2601 or 2627 } &&
+                exception.Entries.Any(entry => entry.Entity is Member))
+            {
+                throw new DuplicateEmailException();
+            }
         }
     }
 }
